@@ -6,11 +6,11 @@ export const VIDEO_SOURCE = "https://closeup-sonicexpert.com/cdn/shop/videos/c/v
 export const VIBRATION_TIMELINE: VibrationSegment[] = [
   {
     id: 'activation',
-    start: 6.2,
-    end: 6.5,
+    start: 6.0,
+    end: 6.2,
     pattern: 1200, // Single burst
     name: 'Activation',
-    intensity: VibrationIntensity.MEDIUM
+    intensity: VibrationIntensity.LOW
   },
   {
     id: 'intense-clean',
@@ -24,8 +24,8 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     id: 'pulse-mode',
     start: 15.5,
     end: 17.0,
-    // Rhythmic bursts: 200ms on, 100ms off...
-    pattern: [200, 100, 200, 100, 200, 100, 200, 100, 200], 
+    // Rhythmic bursts: 800ms on, 100ms off...
+    pattern: [800, 100, 800, 100, 800, 100, 800, 100, 800], 
     name: 'Pulse Mode',
     intensity: VibrationIntensity.MEDIUM
   },

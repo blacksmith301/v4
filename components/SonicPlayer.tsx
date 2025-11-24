@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Play, Pause, Volume2, VolumeX, Maximize, Smartphone, Zap } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Maximize, Smartphone } from 'lucide-react';
 import { VIDEO_SOURCE, VIBRATION_TIMELINE } from '../constants';
 import { VibrationSegment, VibrationIntensity } from '../types';
 
@@ -191,18 +191,6 @@ const SonicPlayer: React.FC = () => {
         onEnded={onEnded}
         playsInline
       />
-
-      {/* Haptic Visual Overlay (Big Icon) */}
-      {activeSegment && (
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 pointer-events-none z-10 animate-pulse">
-            <div className="flex flex-col items-center justify-center p-3 bg-zinc-950/60 backdrop-blur-md rounded-2xl border border-cyan-500/30">
-                <Zap className="w-8 h-8 text-cyan-400 mb-1" />
-                <span className="text-cyan-100 text-xs font-bold uppercase tracking-widest whitespace-nowrap px-2">
-                    {activeSegment.name}
-                </span>
-            </div>
-        </div>
-      )}
 
       {/* Center Play Button (only when paused) */}
       {!isPlaying && (
