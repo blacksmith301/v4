@@ -6,10 +6,10 @@ import { Smartphone, Info } from 'lucide-react';
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-zinc-950 text-zinc-100 selection:bg-cyan-500/30">
+    <div className="flex flex-col min-h-screen bg-zinc-950 text-zinc-100 selection:bg-cyan-500/30 relative overflow-hidden">
       <Header />
       
-      <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow pt-24 pb-12 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-4xl mx-auto space-y-12">
           
           {/* Hero / Player Section */}
@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
           {/* Instructions / Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl">
+            <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl backdrop-blur-sm">
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-zinc-800 rounded-xl">
                   <Smartphone className="w-6 h-6 text-cyan-400" />
@@ -45,7 +45,7 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl">
+            <div className="p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl backdrop-blur-sm">
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-zinc-800 rounded-xl">
                   <Info className="w-6 h-6 text-cyan-400" />
@@ -65,8 +65,9 @@ const App: React.FC = () => {
 
       <Footer />
       
-      {/* Background Decor */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
+      {/* Background Decor - Ambient Lighting */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none -z-0"></div>
+      <div className="fixed bottom-0 right-0 w-[600px] h-[400px] bg-blue-600/5 blur-[100px] rounded-full pointer-events-none -z-0 translate-x-1/3 translate-y-1/3"></div>
     </div>
   );
 };

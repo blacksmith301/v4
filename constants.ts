@@ -34,7 +34,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     start: 21.0,
     end: 22.2,
     // Vibrate - Pause - Vibrate - Pause - Vibrate - Pause
-    pattern: [300, 150, 300, 150, 300], 
+    pattern: [300, 150, 300, 150, 300, 150], 
     name: 'Whitening Pulse',
     intensity: VibrationIntensity.HIGH
   },
@@ -49,7 +49,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
   {
     id: 'closing-burst',
     start: 38.0,
-    end: 38.2, // Slightly extended to ensure feeling
+    end: 38.1,
     pattern: 200,
     name: 'Closing Burst',
     intensity: VibrationIntensity.LOW
