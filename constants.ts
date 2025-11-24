@@ -8,9 +8,9 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     id: 'activation',
     start: 6.0,
     end: 7.0,
-    pattern: 300, // Single burst
+    pattern: 1200, // Single burst
     name: 'Activation',
-    intensity: VibrationIntensity.MEDIUM
+    intensity: VibrationIntensity.HIGH
   },
   {
     id: 'intense-clean',
