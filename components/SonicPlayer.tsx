@@ -3,11 +3,13 @@ import { Play, Pause, Volume2, VolumeX, Maximize, Smartphone } from 'lucide-reac
 import { VIDEO_SOURCE, VIBRATION_TIMELINE } from '../constants';
 import { VibrationSegment, VibrationIntensity } from '../types';
 
-// Helper to format time
-const formatTime = (seconds: number): string => {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+// Helper to format time with milliseconds (00:00.00)
+const formatPreciseTime = (time: number): string => {
+  if (!isFinite(time) || isNaN(time)) return "00:00.00";
+  const mins = Math.floor(time / 60);
+  const secs = Math.floor(time % 60);
+  const ms = Math.floor((time % 1) * 100);
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
 };
 
 const SonicPlayer: React.FC = () => {
@@ -175,6 +177,15 @@ const SonicPlayer: React.FC = () => {
     return classes;
   };
 
+  const getSegmentColor = (intensity: VibrationIntensity) => {
+      switch (intensity) {
+          case VibrationIntensity.HIGH: return 'bg-red-500/70';
+          case VibrationIntensity.MEDIUM: return 'bg-yellow-400/70';
+          case VibrationIntensity.LOW: return 'bg-blue-300/70';
+          default: return 'bg-white/50';
+      }
+  };
+
   return (
     <div 
       ref={containerRef}
@@ -208,8 +219,22 @@ const SonicPlayer: React.FC = () => {
       <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-4 px-6 transition-opacity duration-300 z-30 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'}`}>
         {/* Progress Bar */}
         <div className="relative group h-1.5 w-full bg-zinc-700/50 rounded-full mb-4 cursor-pointer">
+            {/* Haptic Markers */}
+            {duration > 0 && VIBRATION_TIMELINE.map((segment) => {
+                const startPct = (segment.start / duration) * 100;
+                const widthPct = ((segment.end - segment.start) / duration) * 100;
+                return (
+                    <div
+                        key={segment.id}
+                        className={`absolute top-0 h-full z-10 pointer-events-none ${getSegmentColor(segment.intensity)}`}
+                        style={{ left: `${startPct}%`, width: `${widthPct}%` }}
+                        title={`${segment.name}: ${formatPreciseTime(segment.start)} - ${formatPreciseTime(segment.end)}`}
+                    />
+                );
+            })}
+
           <div 
-            className="absolute top-0 left-0 h-full bg-cyan-500 rounded-full" 
+            className="absolute top-0 left-0 h-full bg-cyan-500 rounded-full z-0" 
             style={{ width: `${progress}%` }}
           />
           <input 
@@ -218,7 +243,7 @@ const SonicPlayer: React.FC = () => {
             max="100" 
             value={progress}
             onChange={handleSeek}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
           />
         </div>
 
@@ -232,8 +257,8 @@ const SonicPlayer: React.FC = () => {
               {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
 
-            <span className="text-zinc-300 text-sm font-medium tabular-nums">
-              {formatTime(currentTime)} / {formatTime(duration)}
+            <span className="text-zinc-300 text-sm font-medium tabular-nums min-w-[140px]">
+              {formatPreciseTime(currentTime)} / {formatPreciseTime(duration)}
             </span>
           </div>
 

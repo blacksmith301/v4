@@ -23,7 +23,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
   {
     id: 'pulse-mode',
     start: 15.5,
-    end: 17.0,
+    end: 16.5,
     // Rhythmic bursts: 1200ms on, 100ms off...
     pattern: [1200, 100, 1200, 100, 1200, 100, 1200, 100, 1200], 
     name: 'Pulse Mode',
@@ -41,7 +41,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
   {
     id: 'deep-scrub',
     start: 28.0,
-    end: 30.0,
+    end: 29.0,
     pattern: 2000, // Sustained
     name: 'Deep Scrub',
     intensity: VibrationIntensity.HIGH
