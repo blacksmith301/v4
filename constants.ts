@@ -8,7 +8,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     id: 'activation',
     start: 6.0,
     end: 6.1,
-    pattern: 1200, // Quick burst
+    pattern: 1100, // Quick burst
     name: 'Activation',
     intensity: VibrationIntensity.LOW
   },
