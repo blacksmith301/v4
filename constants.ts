@@ -34,7 +34,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     start: 21.0,
     end: 22.2,
     // Vibrate - Pause - Vibrate - Pause - Vibrate - Pause
-    pattern: [1500, 1000, 1500, 1000, 1500, 1000], 
+    pattern: [1200, 1000, 1200, 1000, 1200, 1000], 
     name: 'Whitening Pulse',
     intensity: VibrationIntensity.LOW
   },
