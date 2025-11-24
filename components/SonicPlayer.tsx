@@ -171,7 +171,11 @@ const SonicPlayer: React.FC = () => {
         if (activeSegment.intensity === VibrationIntensity.HIGH) {
             classes += "animate-rumble shadow-cyan-500/20 shadow-[0_0_50px_-12px_rgba(6,182,212,0.5)]";
         } else {
-            classes += "animate-rumble-light shadow-cyan-500/10";
+            // Disable screen shake for whitening-pulse
+            if (activeSegment.id !== 'whitening-pulse') {
+                classes += "animate-rumble-light ";
+            }
+            classes += "shadow-cyan-500/10";
         }
     }
     return classes;

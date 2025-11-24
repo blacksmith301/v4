@@ -6,8 +6,8 @@ export const VIDEO_SOURCE = "https://closeup-sonicexpert.com/cdn/shop/videos/c/v
 export const VIBRATION_TIMELINE: VibrationSegment[] = [
   {
     id: 'activation',
-    start: 6.0,
-    end: 6.1,
+    start: 6.2,
+    end: 6.35,
     pattern: 200, // Short burst
     name: 'Activation',
     intensity: VibrationIntensity.LOW
@@ -42,7 +42,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     id: 'deep-scrub',
     start: 28.0,
     end: 29.0,
-    pattern: 2000, // Sustained
+    pattern: 1000, // Sustained
     name: 'Deep Scrub',
     intensity: VibrationIntensity.HIGH
   },
