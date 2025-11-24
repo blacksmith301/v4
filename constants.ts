@@ -6,8 +6,8 @@ export const VIDEO_SOURCE = "https://closeup-sonicexpert.com/cdn/shop/videos/c/v
 export const VIBRATION_TIMELINE: VibrationSegment[] = [
   {
     id: 'activation',
-    start: 6.2,
-    end: 6.5,
+    start: 6.0,
+    end: 7.0,
     pattern: 300, // Single burst
     name: 'Activation',
     intensity: VibrationIntensity.MEDIUM
