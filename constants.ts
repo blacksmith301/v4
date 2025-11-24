@@ -24,8 +24,8 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     id: 'pulse-mode',
     start: 15.5,
     end: 17.0,
-    // Rhythmic bursts: 800ms on, 100ms off...
-    pattern: [800, 100, 800, 100, 800, 100, 800, 100, 800], 
+    // Rhythmic bursts: 1200ms on, 100ms off...
+    pattern: [1200, 100, 1200, 100, 1200, 100, 1200, 100, 1200], 
     name: 'Pulse Mode',
     intensity: VibrationIntensity.MEDIUM
   },
@@ -34,7 +34,7 @@ export const VIBRATION_TIMELINE: VibrationSegment[] = [
     start: 21.0,
     end: 22.2,
     // Vibrate - Pause - Vibrate - Pause - Vibrate - Pause
-    pattern: [300, 150, 300, 150, 300, 150], 
+    pattern: [1500, 150, 1500, 150, 1500, 150], 
     name: 'Whitening Pulse',
     intensity: VibrationIntensity.HIGH
   },
