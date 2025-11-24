@@ -168,14 +168,13 @@ const SonicPlayer: React.FC = () => {
   const getContainerClasses = () => {
     let classes = "relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-2xl ring-1 ring-zinc-800 transition-transform duration-100 ";
     if (activeSegment) {
-        if (activeSegment.intensity === VibrationIntensity.HIGH) {
+        if (activeSegment.id === 'whitening-pulse') {
+            // No rumble, special glow pulse, ensure high z-index to sit above the fixed overlay
+            classes += "animate-pulse-glow z-20 ";
+        } else if (activeSegment.intensity === VibrationIntensity.HIGH) {
             classes += "animate-rumble shadow-cyan-500/20 shadow-[0_0_50px_-12px_rgba(6,182,212,0.5)]";
         } else {
-            // Disable screen shake for whitening-pulse
-            if (activeSegment.id !== 'whitening-pulse') {
-                classes += "animate-rumble-light ";
-            }
-            classes += "shadow-cyan-500/10";
+            classes += "animate-rumble-light shadow-cyan-500/10";
         }
     }
     return classes;
@@ -191,99 +190,106 @@ const SonicPlayer: React.FC = () => {
   };
 
   return (
-    <div 
-      ref={containerRef}
-      className={getContainerClasses()}
-      onMouseMove={resetControlsTimeout}
-      onTouchStart={resetControlsTimeout}
-    >
-      <video
-        ref={videoRef}
-        src={VIDEO_SOURCE}
-        className="w-full h-full object-cover"
-        onClick={handlePlayPause}
-        onLoadedMetadata={onLoadedMetadata}
-        onEnded={onEnded}
-        playsInline
-      />
-
-      {/* Center Play Button (only when paused) */}
-      {!isPlaying && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-20">
-          <button 
-            onClick={handlePlayPause}
-            className="w-20 h-20 bg-cyan-500 hover:bg-cyan-400 text-white rounded-full flex items-center justify-center transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(6,182,212,0.6)]"
-          >
-            <Play className="w-8 h-8 fill-current ml-1" />
-          </button>
-        </div>
+    <>
+      {/* Ambient Background Pulse Overlay for Whitening Mode */}
+      {activeSegment?.id === 'whitening-pulse' && (
+        <div className="fixed inset-0 pointer-events-none z-[5] animate-pulse-screen"></div>
       )}
 
-      {/* Control Bar */}
-      <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-4 px-6 transition-opacity duration-300 z-30 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'}`}>
-        {/* Progress Bar */}
-        <div className="relative group h-1.5 w-full bg-zinc-700/50 rounded-full mb-4 cursor-pointer">
-            {/* Haptic Markers */}
-            {duration > 0 && VIBRATION_TIMELINE.map((segment) => {
-                const startPct = (segment.start / duration) * 100;
-                const widthPct = ((segment.end - segment.start) / duration) * 100;
-                return (
-                    <div
-                        key={segment.id}
-                        className={`absolute top-0 h-full z-10 pointer-events-none ${getSegmentColor(segment.intensity)}`}
-                        style={{ left: `${startPct}%`, width: `${widthPct}%` }}
-                        title={`${segment.name}: ${formatPreciseTime(segment.start)} - ${formatPreciseTime(segment.end)}`}
-                    />
-                );
-            })}
+      <div 
+        ref={containerRef}
+        className={getContainerClasses()}
+        onMouseMove={resetControlsTimeout}
+        onTouchStart={resetControlsTimeout}
+      >
+        <video
+          ref={videoRef}
+          src={VIDEO_SOURCE}
+          className="w-full h-full object-cover"
+          onClick={handlePlayPause}
+          onLoadedMetadata={onLoadedMetadata}
+          onEnded={onEnded}
+          playsInline
+        />
 
-          <div 
-            className="absolute top-0 left-0 h-full bg-cyan-500 rounded-full z-0" 
-            style={{ width: `${progress}%` }}
-          />
-          <input 
-            type="range" 
-            min="0" 
-            max="100" 
-            value={progress}
-            onChange={handleSeek}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <button onClick={handlePlayPause} className="text-white hover:text-cyan-400 transition-colors">
-              {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current" />}
+        {/* Center Play Button (only when paused) */}
+        {!isPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-20">
+            <button 
+              onClick={handlePlayPause}
+              className="w-20 h-20 bg-cyan-500 hover:bg-cyan-400 text-white rounded-full flex items-center justify-center transition-all transform hover:scale-105 shadow-[0_0_30px_rgba(6,182,212,0.6)]"
+            >
+              <Play className="w-8 h-8 fill-current ml-1" />
             </button>
+          </div>
+        )}
 
-            <button onClick={handleMuteToggle} className="text-zinc-300 hover:text-white transition-colors">
-              {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-            </button>
+        {/* Control Bar */}
+        <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent pt-12 pb-4 px-6 transition-opacity duration-300 z-30 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'}`}>
+          {/* Progress Bar */}
+          <div className="relative group h-1.5 w-full bg-zinc-700/50 rounded-full mb-4 cursor-pointer">
+              {/* Haptic Markers */}
+              {duration > 0 && VIBRATION_TIMELINE.map((segment) => {
+                  const startPct = (segment.start / duration) * 100;
+                  const widthPct = ((segment.end - segment.start) / duration) * 100;
+                  return (
+                      <div
+                          key={segment.id}
+                          className={`absolute top-0 h-full z-10 pointer-events-none ${getSegmentColor(segment.intensity)}`}
+                          style={{ left: `${startPct}%`, width: `${widthPct}%` }}
+                          title={`${segment.name}: ${formatPreciseTime(segment.start)} - ${formatPreciseTime(segment.end)}`}
+                      />
+                  );
+              })}
 
-            <span className="text-zinc-300 text-sm font-medium tabular-nums min-w-[140px]">
-              {formatPreciseTime(currentTime)} / {formatPreciseTime(duration)}
-            </span>
+            <div 
+              className="absolute top-0 left-0 h-full bg-cyan-500 rounded-full z-0" 
+              style={{ width: `${progress}%` }}
+            />
+            <input 
+              type="range" 
+              min="0" 
+              max="100" 
+              value={progress}
+              onChange={handleSeek}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+            />
           </div>
 
-          <div className="flex items-center space-x-4">
-             {/* Haptic Toggle */}
-             <button 
-                onClick={() => setHapticsEnabled(!hapticsEnabled)}
-                className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-colors border ${hapticsEnabled ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/50' : 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}
-                title="Toggle Haptics"
-             >
-                <Smartphone className={`w-3.5 h-3.5 ${hapticsEnabled ? 'animate-pulse' : ''}`} />
-                <span>{hapticsEnabled ? '4D ON' : '4D OFF'}</span>
-             </button>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <button onClick={handlePlayPause} className="text-white hover:text-cyan-400 transition-colors">
+                {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current" />}
+              </button>
 
-            <button onClick={toggleFullscreen} className="text-zinc-300 hover:text-white transition-colors">
-              <Maximize className="w-5 h-5" />
-            </button>
+              <button onClick={handleMuteToggle} className="text-zinc-300 hover:text-white transition-colors">
+                {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+              </button>
+
+              <span className="text-zinc-300 text-sm font-medium tabular-nums min-w-[140px]">
+                {formatPreciseTime(currentTime)} / {formatPreciseTime(duration)}
+              </span>
+            </div>
+
+            <div className="flex items-center space-x-4">
+               {/* Haptic Toggle */}
+               <button 
+                  onClick={() => setHapticsEnabled(!hapticsEnabled)}
+                  className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-colors border ${hapticsEnabled ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/50' : 'bg-zinc-800 text-zinc-500 border-zinc-700'}`}
+                  title="Toggle Haptics"
+               >
+                  <Smartphone className={`w-3.5 h-3.5 ${hapticsEnabled ? 'animate-pulse' : ''}`} />
+                  <span>{hapticsEnabled ? '4D ON' : '4D OFF'}</span>
+               </button>
+
+              <button onClick={toggleFullscreen} className="text-zinc-300 hover:text-white transition-colors">
+                <Maximize className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

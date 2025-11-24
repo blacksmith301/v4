@@ -36,12 +36,36 @@
         100% { transform: translate(1px, -2px) rotate(-1deg); }
       }
       
+      @keyframes pulse-glow {
+        0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); border-color: rgb(39 39 42); }
+        10% { box-shadow: 0 0 200px 52px rgba(34, 211, 238, 0.4); border-color: rgba(34, 211, 238, 0.8); }
+        70% { box-shadow: 0 0 70px 18px rgba(34, 211, 238, 0.1); border-color: rgba(34, 211, 238, 0.3); }
+        75% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); border-color: rgb(39 39 42); }
+        100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); border-color: rgb(39 39 42); }
+      }
+
+      @keyframes pulse-screen {
+        0% { background: radial-gradient(circle at center, rgba(34, 211, 238, 0), transparent 70%); }
+        10% { background: radial-gradient(circle at center, rgba(34, 211, 238, 0.15), transparent 70%); }
+        70% { background: radial-gradient(circle at center, rgba(34, 211, 238, 0.05), transparent 70%); }
+        75% { background: radial-gradient(circle at center, rgba(34, 211, 238, 0), transparent 70%); }
+        100% { background: radial-gradient(circle at center, rgba(34, 211, 238, 0), transparent 70%); }
+      }
+      
       .animate-rumble {
         animation: rumble 0.2s linear infinite;
       }
 
       .animate-rumble-light {
         animation: rumble 0.4s linear infinite;
+      }
+
+      .animate-pulse-glow {
+        animation: pulse-glow 0.4s linear infinite;
+      }
+
+      .animate-pulse-screen {
+        animation: pulse-screen 0.4s linear infinite;
       }
     </style>
   <script type="importmap">
